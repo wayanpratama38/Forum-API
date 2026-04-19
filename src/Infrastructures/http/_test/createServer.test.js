@@ -16,6 +16,20 @@ describe('HTTP server', () => {
     await AuthenticationsTableTestHelper.cleanTable();
   });
 
+  describe('when GET /', () => {
+    it('should return 200 and hello world', async () => {
+      // Arrange
+      const app = await createServer({});
+
+      // Action
+      const response = await request(app).get('/');
+
+      // Assert
+      expect(response.status).toEqual(200);
+      expect(response.body.data).toEqual('Hello world!');
+    });
+  });
+
   it('should response 404 when request unregistered route', async () => {
     // Arrange
     const app = await createServer({});
