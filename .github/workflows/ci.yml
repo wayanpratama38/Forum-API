@@ -22,7 +22,7 @@ jobs:
                 env:
                     POSTGRES_USER: developer
                     POSTGRES_PASSWORD: supersecretpassword
-                    POSTGRES_DATABASE: forumapi_test
+                    POSTGRES_DB: forumapi_test
             
                 options: >-
                     --health-cmd pg_isready
