@@ -21,6 +21,48 @@ describe('/threads/{threadId}/comments endpoint', () => {
     await UsersTableTestHelper.cleanTable();
   });
 
+  describe('when PUT /threads/{threadId}/comments/{commentId}/likes', () => {
+    it('should response 200 and return success status', async () => {
+      const server = await createServer(container);
+      const accessToken = await ServerTestHelper.getAccessTokenWithUser({ server });
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+      const userId = 'user-123';
+
+      await UsersTableTestHelper.addUser({ id: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
+
+      const response = await request(server)
+        .put(`/threads/${threadId}/comments/${commentId}/likes`)
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      expect(response.status).toEqual(200);
+      expect(response.body.status).toEqual('success');
+    });
+
+    it('should response 404 when thread or comment not found', async () => {
+      const server = await createServer(container);
+      const accessToken = await ServerTestHelper.getAccessTokenWithUser({ server });
+
+      const response = await request(server)
+        .put('/threads/thread-999/comments/comment-999/likes')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      expect(response.status).toEqual(404);
+      expect(response.body.status).toEqual('fail');
+    });
+
+    it('should response 401 when unauthenticated', async () => {
+      const server = await createServer(container);
+
+      const response = await request(server)
+        .put('/threads/thread-123/comments/comment-123/likes');
+
+      expect(response.status).toEqual(401);
+    });
+  });
+
   describe('when POST /threads/{threadId}/comments', ()=> {
     it('should response 201 and added comment', async () => {
       const server = await createServer(container);

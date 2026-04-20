@@ -39,7 +39,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       throw new Error('COMMENT_REPOSITORY_POSTGRES.UNAUTHORIZED');
     }
 
-    return result.rowCount > 0 ? true : false;
+    return true;
   }
 
   async getCommentById(commentId){
@@ -107,7 +107,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       throw new Error('COMMENT_REPOSITORY_POSTGRES.NOT_FOUND');
     }
 
-    return result.rowCount > 0 ? true : false;
+    return true;
   }
 
   async putLikeComment(commentId, owner){

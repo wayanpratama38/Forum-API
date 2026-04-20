@@ -60,7 +60,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       throw new Error('REPLY_REPOSITORY_POSTGRES.UNAUTHORIZED');
     }
 
-    return result.rowCount > 0 ? true : false;
+    return true;
   }
 
   async deleteReply(replyId){
